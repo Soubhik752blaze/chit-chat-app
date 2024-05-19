@@ -1,0 +1,68 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Node modules
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Build output
+frontend/build/
+frontend/dist/
+backend/build/
+backend/dist/
+
+
+# Dependency directories
+frontend/bower_components/
+backend/bower_components/
+
+# IDE and editor files
+*.idea/
+*.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Miscellaneous
+*.bak
+*.swp
+*.tmp
+
+# Production files
+frontend/.next/
+frontend/out/
+frontend/.vercel/
+frontend/.netlify/
+backend/.next/
+backend/out/
+backend/.vercel/
+backend/.netlify/
+
+# Coverage directories
+frontend/coverage/
+backend/coverage/
+
+# Miscellaneous
+.turbolinks-cache
+*.tgz
+*.zip
+*.tar.gz
+*.rar
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+frontend/.eslintcache
+backend/.eslintcache
+
+# Lock files
+package-lock.json
+frontend/package-lock.json
+backend/package-lock.json
