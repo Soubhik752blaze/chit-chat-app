@@ -24,7 +24,6 @@ const defaultOptions = {
 
 const ScrollableChat = ({ messages, istyping }) => {
     const { user } = ChatState();
-    // console.log('messages', messages);
 
     return (
         <ScrollableFeed>
@@ -46,8 +45,7 @@ const ScrollableChat = ({ messages, istyping }) => {
                         {/* User message  */}
                         <span
                             style={{
-                                backgroundColor: `${m.sender._id === user._id ? '#BEE3F8' : '#B9F5D0'
-                                    }`,
+                                backgroundColor: `${m.sender._id === user._id ? '#BEE3F8' : '#B9F5D0'}`,
                                 fontSize: '12px',
                                 marginLeft: isSameSenderMargin(messages, m, i, user._id),
                                 marginTop: isSameUser(messages, m, i, user._id) ? 5 : 10,
@@ -62,12 +60,13 @@ const ScrollableChat = ({ messages, istyping }) => {
                 ))
             }
             {istyping && <div>
-                <Lottie
+                <Lottie 
                     options={defaultOptions}
-                    width={50}
-                    style={{ borderRadius: '10px', marginLeft: 0, marginTop: 1 }}
+                    width={60}
+                    style={{ borderRaFdius: '10px', marginLeft: 3 }}
                 />
-            </div>}
+                </div>
+            }
         </ScrollableFeed >
     );
 };

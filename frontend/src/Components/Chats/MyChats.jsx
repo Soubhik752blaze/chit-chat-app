@@ -9,15 +9,17 @@ import { ChatState } from "../../Context/ChatProvider";
 import Snackbar from '@mui/material/Snackbar';
 import { getSender } from "../../Config/ChatLogics";
 import GroupChatModal from "../Modals/GroupChatModal";
+import { useNavigate } from "react-router-dom";
 
 const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
   const [openToast, setOpenToast] = useState(false);
+  const navigate = useNavigate();
   const [snackbarmessage, setSnackbarmessage] = useState('');
   const vertical = 'bottom'
   const horizontal = 'center'
 
-  const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
+  const { selectedChat, setSelectedChat, user, setUser, chats, setChats } = ChatState();
 
   const handleCloseToast = (event, reason) => {
     if (reason === 'clickaway') {
@@ -40,7 +42,18 @@ const MyChats = ({ fetchAgain }) => {
       setChats(data);
       // console.log('fetched Chats', data);
     } catch (error) {
-      setSnackbarmessage("Failed to load chats");
+      console.log(error.response.request.status);
+      if (error.response.request.status == 401) {
+        setSnackbarmessage("Session timeout!! Redirecting to Login");
+        setOpenToast(true);
+        setTimeout(()=>{
+          localStorage.removeItem("userInfo");
+          setUser({});
+          navigate("/")
+        }, 3500)
+        return;
+      }
+      setSnackbarmessage(error.response.data.message ? error.response.data.message : "Failed to load chats");
       setOpenToast(true);
     }
   };
@@ -61,7 +74,7 @@ const MyChats = ({ fetchAgain }) => {
           px: 2,
           py: 2,
           bgcolor: 'white',
-          width: { xs: '100%', md: '31%'},
+          width: { xs: '100%', md: '31%' },
           borderRadius: '12px',
           borderWidth: '1px',
         }}
@@ -78,19 +91,19 @@ const MyChats = ({ fetchAgain }) => {
         >
           My Chats
           <GroupChatModal>
-          <Tooltip title="Create a new group chat" placement="top-end">
-            <Button
-              size='small'
-              onClick={() => { }}
-              sx={{
-                display: 'flex',
-                fontSize: { xs: '18px', lg: '12px' },
-                px: 2
-              }}
-            >
-              New Group Chat
-            </Button>
-          </Tooltip>
+            <Tooltip title="Create a new group chat" placement="top-end">
+              <Button
+                size='small'
+                onClick={() => { }}
+                sx={{
+                  display: 'flex',
+                  fontSize: { xs: '18px', lg: '12px' },
+                  px: 2
+                }}
+              >
+                New Group Chat
+              </Button>
+            </Tooltip>
 
           </GroupChatModal>
         </Box>

@@ -9,7 +9,7 @@ import axios from 'axios';
 import styles from './style.module.css'
 import ScrollableChat from './ScrollableChat';
 import io from 'socket.io-client'
-import animationData from "../../Animations/typing.json"
+import { useNavigate } from 'react-router-dom';
 
 const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
@@ -22,7 +22,8 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
-  const { selectedChat, setSelectedChat, user } = ChatState();
+  const { selectedChat, setSelectedChat, user, setUser, } = ChatState();
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -100,7 +101,16 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       //use socket.io to join the chat room
       socket.emit("join chat", selectedChat._id);
     } catch (error) {
-      console.log(error);
+      if (error.response.request.status == 401) {
+        setSnackbarmessage("Session timeout!! Redirecting to Login");
+        setOpen(true);
+        setTimeout(()=>{
+          localStorage.removeItem("userInfo");
+          setUser({});
+          navigate("/")
+        }, 3500)
+        return;
+      }
       setOpen(true);
       setSnackbarmessage("Failed to load messages");
     }
@@ -134,7 +144,16 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
         setMessages([...messages, data]);
 
       } catch (error) {
-        // console.log(error);
+        if (error.response.request.status == 401) {
+          setSnackbarmessage("Session timeout!! Redirecting to Login");
+          setOpen(true);
+          setTimeout(()=>{
+            localStorage.removeItem("userInfo");
+            setUser({});
+            navigate("/")
+          }, 3500)
+          return;
+        }
         setOpen(true);
         setSnackbarmessage("Failed to send the Message");
       }
@@ -204,7 +223,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
                 (!selectedChat.isGroupChat ? (
                   <>
                     {getSender(user, selectedChat.users)}
-                    <ProfileModal user={getSenderFull(user, selectedChat.users)} />
+                    <ProfileModal User={getSenderFull(user, selectedChat.users)} />
                   </>
                 ) : (
                   <>

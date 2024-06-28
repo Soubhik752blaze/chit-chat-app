@@ -33,7 +33,7 @@ function SideDrawer() {
   const navigate = useNavigate();
   
   //context use
-  const { setSelectedChat, user, notifications, setNotifications, chats, setChats } = ChatState();
+  const { setSelectedChat, user, setUser, notifications, setNotifications, chats, setChats } = ChatState();
 
   //mui specific states and functions
   const vertical = 'bottom'
@@ -98,7 +98,16 @@ function SideDrawer() {
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
-      // console.log(error);
+      if (error.response.request.status == 401) {
+        setSnackbarmessage("Session timeout!! Redirecting to Login");
+        setOpenToast(true);
+        setTimeout(()=>{
+          localStorage.removeItem("userInfo");
+          setUser({});
+          navigate("/")
+        }, 3500)
+        return;
+      }
       setSnackbarmessage("Error Occured");
       setOpenToast(true);
       setLoading(false);
@@ -126,6 +135,16 @@ function SideDrawer() {
       setLoadingChat(false);
       toggleDrawer(false);
     } catch (error) {
+      if (error.response.request.status == 401) {
+        setSnackbarmessage("Session timeout!! Redirecting to Login");
+        setOpenToast(true);
+        setTimeout(()=>{
+          localStorage.removeItem("userInfo");
+          setUser({});
+          navigate("/")
+        }, 3500)
+        return;
+      }
       setSnackbarmessage("Error Occured while loading the chat");
       setOpenToast(true);
       setLoadingChat(false);
@@ -366,7 +385,7 @@ function SideDrawer() {
               'aria-labelledby': 'basic-button',
             }}
           >
-            <ProfileModal user={user}>
+            <ProfileModal User={user}>
               <MenuItem p={1}>
                 Profile
               </MenuItem>

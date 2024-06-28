@@ -39,14 +39,14 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-function ProfileModal({ user, children }) {
+function ProfileModal({ User, children }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [pic, setPic] = React.useState('');
     const [picname, setPicname] = React.useState('');
     const [loading, setLoading] = React.useState(false);
-    const { setUser } = ChatState();
+    const { user, setUser } = ChatState();
 
     //snackbar logic
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
@@ -103,19 +103,19 @@ function ProfileModal({ user, children }) {
         try {
             let config = {
                 method: 'post',
-                url: '/api/user/changePic',
+                url: '/api/User/changePic',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${user.token}`
+                    Authorization: `Bearer ${User.token}`
                 },
                 data: { "pic": pic }
             };
             const { data } = await axios.request(config);
             const updatedUserInfo = {
-                ...user,
-                picture: pic 
+                ...User,
+                picture: pic
             };
-            
+
             setPic('');
             setPicname('');
             setUser(updatedUserInfo);
@@ -146,37 +146,41 @@ function ProfileModal({ user, children }) {
             >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h5" component="h2">
-                        {user.name ? user.name : 'User'}
+                        {User.name ? User.name : 'User'}
                     </Typography>
-                    <Avatar sx={{ height: "100px", width: "100px" }} alt={user.name ? user.name : "User"} src={user.picture ? user.picture : defaultUserpic} />
+                    <Avatar sx={{ height: "100px", width: "100px" }} alt={User.name ? User.name : "User"} src={User.picture ? User.picture : defaultUserpic} />
                     <Typography
                         variant="body1"
                         sx={{
                             fontSize: { xs: '14px', md: '20px' }
                         }}
                     >
-                        Email : {user.email ? user.email : 'User Email'}
+                        Email : {User.email ? User.email : 'User Email'}
                     </Typography>
 
-                    <FormControl required={false} fullWidth variant="outlined">
-                        <Box sx={{ mt: 2, ml: "auto", display: 'flex', gap: "1rem", alignItems: "center" }}>
-                            <Button
-                                component="label"
-                                role={undefined}
-                                variant="contained"
-                                tabIndex={-1}
-                                loading={loading}
-                                disabled={pic}
-                                onChange={(e) => postPicture(e.target.files[0])}
-                            >
-                                Upload file
-                                <VisuallyHiddenInput type="file" />
-                            </Button>
-                            <span style={{ display: picname !== '' ? "flex" : "hidden", fontSize: "10px" }}>
-                                {picname}
-                            </span>
-                        </Box>
-                    </FormControl>
+                    {
+                        (user._id === User._id) &&
+                        <FormControl required={false} fullWidth variant="outlined">
+                            <Box sx={{ mt: 2, ml: "auto", display: 'flex', gap: "1rem", alignItems: "center" }}>
+                                <Button
+                                    component="label"
+                                    role={undefined}
+                                    variant="contained"
+                                    tabIndex={-1}
+                                    loading={loading}
+                                    disabled={pic}
+                                    onChange={(e) => postPicture(e.target.files[0])}
+                                >
+                                    Upload file
+                                    <VisuallyHiddenInput type="file" />
+                                </Button>
+                                <span style={{ display: picname !== '' ? "flex" : "hidden", fontSize: "10px" }}>
+                                    {picname}
+                                </span>
+                            </Box>
+                        </FormControl>
+                    }
+
 
                     {pic && (
                         <Box>
