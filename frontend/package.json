@@ -50,6 +50,6 @@
   },
   "proxy": "http://localhost:5000",
   "devDependencies": {
-    "webpack": "^4.42.0"
+    "webpack": "^4.47.0"
   }
 }
