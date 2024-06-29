@@ -1,17 +1,15 @@
 # MERN stack Chat Application - Chit-Chat App
 
-A real-time chat application built using the MERN stack (MongoDB, Express, React, Node.js) and Material-UI (MUI), leveraging Socket.IO for real-time messaging. 
-The application supports both individual and group chat features with full functionalities.
+Chit-Chat App is a real-time messaging application built using the MERN stack (MongoDB, Express, React, Node.js) and Material-UI (MUI), leveraging Socket.IO for real-time messaging. It supports both individual and group chat functionalities with full user authentication and profile management.
 
 ## Features
 
 - Real-time messaging with Socket.IO
-- Individual chat
-- Group chat
-- User authentication and authorization
-- Responsive design with Material-UI
+- Individual and group chat functionality with admin access functionalities.
+- User authentication and authorization using JWT and bcrypt
+- Responsive design using Material-UI
 - User profile management
-- Typing indicators
+- Real-time Typing indicators to show when a user is typing.
 
 ## Technologies Used
 
@@ -20,5 +18,5 @@ The application supports both individual and group chat features with full funct
 - **Database:** MongoDB
 - **Real-time Communication:** Socket.IO
 - **Authentication:** JWT (JSON Web Tokens), bcrypt
-- **Other Libraries:** Axios
+- **Other Libraries:** Axios, Lottie
 
