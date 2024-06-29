@@ -11,6 +11,7 @@ const notificationRoutes = require("./Routes/notificationRoutes");
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 const messageRoutes = require('./Routes/messageRoutes');
 const Notification = require('./models/notificationModel');
+const path = require('path');
 
 
 //assignments
@@ -24,10 +25,6 @@ connectDB();
 app.use(express.json());
 
 //routes
-app.get("/", (req, res) => {
-    res.send("App is running");
-})
-
 app.use('/api/user', userRoutes);
 app.use('/api/message', messageRoutes)
 app.use("/api/chat", chatRoutes);
@@ -41,6 +38,24 @@ app.use(errorHandler);
 const server = app.listen(port, () => {
     console.log(`Server started on ${port}`.yellow.bold);
 })
+
+// --------------------------DEPLOYMENT---------------------------
+
+const __dirname1 = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "/frontend/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running..");
+  });
+}
+
+// --------------------------DEPLOYMENT---------------------------
 
 const io = require('socket.io')(server, {
     // This configuration ensures that the server pings the client every 25 seconds
@@ -85,11 +100,6 @@ io.on("connection", (socket) => {
             console.log("User Joined Room: " + room);
         }
 
-    });
-
-    socket.on("leave room", (room) => {
-        socket.leave(room);
-        console.log("User left Room", userData.name)
     });
 
     //real time send and recieve messages
