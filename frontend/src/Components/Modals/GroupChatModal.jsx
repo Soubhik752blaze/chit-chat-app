@@ -38,8 +38,18 @@ function GroupChatModal({ children }) {
     // modal use
     const [open, setOpen] = useState(false);
 
+    const resetForm = () => {
+        setGroupChatName('');
+        setSelectedUsers([]);
+        setSearch('');
+        setSearchResult([]);
+    };
+
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        resetForm();
+    }
 
     const handleSearch = async (query) => {
         if (!query) {

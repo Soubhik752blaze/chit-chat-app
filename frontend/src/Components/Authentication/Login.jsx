@@ -115,6 +115,8 @@ function Login() {
         <Button width="100%" variant="contained" color='success' style={{ color: "white", marginBottom: 20 }} onClick={() => {
           setEmail("guest@example.com");
           setPassword('123456');
+          // setEmail("guestuser@test.com");
+          // setPassword('12346789');
         }}>
           Get Guest Credentials
         </Button>

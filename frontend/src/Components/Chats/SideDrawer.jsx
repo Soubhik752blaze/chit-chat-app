@@ -31,7 +31,7 @@ function SideDrawer() {
   const [snackbarmessage, setSnackbarmessage] = useState('');
   const [socketConnected, setSocketConnected] = useState(false);
   const navigate = useNavigate();
-  
+
   //context use
   const { setSelectedChat, user, setUser, notifications, setNotifications, chats, setChats } = ChatState();
 
@@ -40,8 +40,6 @@ function SideDrawer() {
   const horizontal = 'center'
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up('md'));
-
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -59,6 +57,7 @@ function SideDrawer() {
 
   const toggleDrawer = (newOpen) => () => {
     setOpenDrawer(newOpen);
+    resetForm();
   };
 
   const handleClick = (event) => {
@@ -101,7 +100,7 @@ function SideDrawer() {
       if (error.response.request.status == 401) {
         setSnackbarmessage("Session timeout!! Redirecting to Login");
         setOpenToast(true);
-        setTimeout(()=>{
+        setTimeout(() => {
           localStorage.removeItem("userInfo");
           setUser({});
           navigate("/")
@@ -133,12 +132,12 @@ function SideDrawer() {
       // console.log(data);
       setSelectedChat(data);
       setLoadingChat(false);
-      toggleDrawer(false);
+      setOpenDrawer(false);
     } catch (error) {
       if (error.response.request.status == 401) {
         setSnackbarmessage("Session timeout!! Redirecting to Login");
         setOpenToast(true);
-        setTimeout(()=>{
+        setTimeout(() => {
           localStorage.removeItem("userInfo");
           setUser({});
           navigate("/")
@@ -222,6 +221,11 @@ function SideDrawer() {
     }
   };
 
+  const resetForm = () => {
+    setSearch('');
+    setSearchResult([]);
+};
+
 
   //useEffects
   useEffect(() => {
@@ -268,7 +272,13 @@ function SideDrawer() {
       >
         <TextField id="outlined-basic" placeholder="Search for users to chat" variant="outlined" size="small"
           value={search}
-          onChange={(e) => { setSearch(e.target.value) }} />
+          onChange={(e) => { setSearch(e.target.value) }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && search){
+              e.preventDefault();
+              handleSearch();
+            } 
+          }} />
         <Button sx={{ backgroundColor: 'eee', padding: "2px", margin: "0" }} size="small" onClick={handleSearch}>Go</Button>
       </Box>
       <Divider />
@@ -392,7 +402,7 @@ function SideDrawer() {
             </ProfileModal>
 
             <ConfirmationModal text1={"Logout Account"} text2={"Are you sure you want to log out? Once you logout you need to login again. Are you Ok?"}
-            Btn1Text={"Cancel"} Btn2Text={"Yes, Logout!"} Btn2Handler={logoutHandler}>
+              Btn1Text={"Cancel"} Btn2Text={"Yes, Logout!"} Btn2Handler={logoutHandler}>
               <MenuItem p={1}>
                 Logout
               </MenuItem>

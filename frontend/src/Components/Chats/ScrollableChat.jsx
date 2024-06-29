@@ -11,6 +11,7 @@ import {
 } from '../../Config/ChatLogics';
 import { ChatState } from '../../Context/ChatProvider';
 import Lottie from 'react-lottie'
+import { findTime } from '../../Config/Enhancements';
 
 const defaultOptions = {
     loop: true,
@@ -24,7 +25,11 @@ const defaultOptions = {
 
 const ScrollableChat = ({ messages, istyping }) => {
     const { user } = ChatState();
+    console.log(messages);
 
+    messages.map((m) => {
+        console.log(findTime(m.createdAt));
+    })
     return (
         <ScrollableFeed>
             {messages &&
@@ -45,27 +50,33 @@ const ScrollableChat = ({ messages, istyping }) => {
                         {/* User message  */}
                         <span
                             style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'start',
+                                justifyContent: "center",
                                 backgroundColor: `${m.sender._id === user._id ? '#BEE3F8' : '#B9F5D0'}`,
-                                fontSize: '12px',
+                                fontSize: '13px',
                                 marginLeft: isSameSenderMargin(messages, m, i, user._id),
                                 marginTop: isSameUser(messages, m, i, user._id) ? 5 : 10,
-                                borderRadius: '20px',
+                                borderRadius: '8px',
                                 padding: '5px 15px',
                                 maxWidth: '75%',
                             }}
                         >
                             {m.content}
+                            <span style={{ fontSize: '7px', fontWeight: 'bold' }}>{findTime(m.createdAt)}</span>
                         </span>
+
                     </div>
                 ))
             }
             {istyping && <div>
-                <Lottie 
+                <Lottie
                     options={defaultOptions}
                     width={60}
                     style={{ borderRaFdius: '10px', marginLeft: 3 }}
                 />
-                </div>
+            </div>
             }
         </ScrollableFeed >
     );
