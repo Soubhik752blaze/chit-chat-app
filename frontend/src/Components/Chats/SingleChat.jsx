@@ -14,7 +14,6 @@ import { useNavigate } from 'react-router-dom';
 const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
 
-
 function SingleChat({ fetchAgain, setFetchAgain }) {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -24,7 +23,6 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
   const [istyping, setIsTyping] = useState(false);
   const { selectedChat, setSelectedChat, user, setUser, } = ChatState();
   const navigate = useNavigate();
-
 
   useEffect(() => {
     //establish socket connection
@@ -104,7 +102,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       if (error.response.request.status == 401) {
         setSnackbarmessage("Session timeout!! Redirecting to Login");
         setOpen(true);
-        setTimeout(()=>{
+        setTimeout(() => {
           localStorage.removeItem("userInfo");
           setUser({});
           navigate("/")
@@ -147,7 +145,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
         if (error.response.request.status == 401) {
           setSnackbarmessage("Session timeout!! Redirecting to Login");
           setOpen(true);
-          setTimeout(()=>{
+          setTimeout(() => {
             localStorage.removeItem("userInfo");
             setUser({});
             navigate("/")
