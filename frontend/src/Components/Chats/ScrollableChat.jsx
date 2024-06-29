@@ -25,11 +25,6 @@ const defaultOptions = {
 
 const ScrollableChat = ({ messages, istyping }) => {
     const { user } = ChatState();
-    console.log(messages);
-
-    messages.map((m) => {
-        console.log(findTime(m.createdAt));
-    })
     return (
         <ScrollableFeed>
             {messages &&
