@@ -1,0 +1,20 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+  ignore = "git diff --quiet HEAD^ HEAD ."
+
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+[build.environment]
+  CI = "false"
+  NODE_ENV = "production"
+
+[[headers]]
+  for = "/*"
+  values = { "X-Frame-Options" = "DENY" }
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
