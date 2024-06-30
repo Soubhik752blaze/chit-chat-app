@@ -5,7 +5,7 @@ const {
     fetchAllNotifications,
     markNotificationAsRead,
     markAllNotificationsAsRead
-} = require('../controllers/notificationControllers')
+} = require('../Controllers/notificationControllers')
 
 const { protect } = require("../middleware/authMiddleware");
 
