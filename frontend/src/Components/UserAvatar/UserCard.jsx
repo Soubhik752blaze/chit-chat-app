@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Avatar, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Avatar, Typography } from '@mui/material';
 
 function UserCard({ user, handleFunction }) {
 
