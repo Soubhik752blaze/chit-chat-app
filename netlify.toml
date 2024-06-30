@@ -1,7 +1,7 @@
 [build]
   command = "npm run build"
-  publish = "build"
   ignore = "git diff --quiet HEAD^ HEAD ."
+  publish = "frontend/build"
 
 [[plugins]]
   package = "@netlify/plugin-lighthouse"
